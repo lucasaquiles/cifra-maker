@@ -1,20 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Cifra música</title>
 
-	<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+	<script src="./js/jquery-3.1.1.min.js" ></script>
+
+<script  src="./js/jquery.confirm.min.js"  ></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="./css/bootstrap.min.css" >
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="./css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="./js/bootstrap.min.js" ></script>
+
 	<style type="text/css">
+	.wrapper{
+		width:800px;
+		height:auto;
+		overflow:hidden;
+		margin:0 auto;
+			margin-top:30px;
+
+}
+
+#text-area{
+	
+	text-align:justify;
+}
 	body{
 
 		line-height: 45px;
+		text-align:jusfity;
 	}
 	span{
 		position:relative;
-		font-weight: bold;
+		
 		
 		text-decoration: underline;
 	}
+#texto{
+	width:90%;
+height:auto;
+overflow:hidden;
+margin:10px 0;
+line-height:30px;
+padding:5px;
+
+}
 
 	.cifra{
 
@@ -24,11 +59,11 @@
 		
 		
 		padding:10px;
-		top:-40px;
+		top:-38px;
 		left:10px;
 		
 		border-radius: 10px;
-		z-index: 999999;
+		z-index: 11;
 		font-size:12px;
 		color:#c00;
 		font-style: italic;;
@@ -39,51 +74,117 @@
 		position:absolute;
 		width:auto;
 		height: auto;
-		border:solid 1px #000;
+		border:solid 1px #ccc;
 		padding:10px;
 		top:-100px;
 		left:10px;
 		background-color:#fff;
-		
+		z-index:10;
 	}
+
+
 	</style>
 	<script type="text/javascript">
-var targ = null;
+	
 
+			String.prototype.replaceAll = function (find, replace) {
+			    var result = this;
+			    do {
+				var split = result.split(find);
+				result = split.join(replace);
+			    } while (split.length > 1);
+			    return result;
+			};
 
+tmp = null;
 			jQuery(function(){
-				jQuery("body").on("click",'.btn', function(e){
+				jQuery("body").on("click",'.btn-success', function(e){
 
-
-					var c = jQuery('#text').val();
+					var c = jQuery(e.target).parent().parent().find("#text").val();
+					
 					console.log("salvou");
+					jQuery(e.target).parent().parent().find(".cifra").text(c);
 					jQuery(e.target).parent().fadeOut();
 
-
-					jQuery('.cifra').text(c);
+					
 				});
+
+				jQuery("body").on("click",'.btn-danger', function(e){
+
+					
+					jQuery(e.target).parent().prev().remove();
+var tmp = jQuery(e.target).parent().parent();
+jQuery(e.target).parent().remove();
+tmp.contents().unwrap()
+tmp = null;
+					
+				});
+
+					
+
+				jQuery("body").on("click",'.cifra', function(e){
+
+					
+$(".cifra").confirm({
+				    text: "Você quer apagar essa cifra?",
+				    title: "Apagar?",
+				    confirm: function(button) {
+
+jQuery(button).next().remove()
+var tmp = jQuery(button).parent();
+jQuery(button).remove();
+
+var contentHtml = jQuery("#text-area p").html();
+
+tmp.contents().unwrap();
+
+
+console.log(button);
+				    },
+				    cancel: function(button) {
+					
+				    },
+				    confirmButton: "De boas!",
+				    cancelButton: "Não",
+				    post: true,
+				    confirmButtonClass: "btn-danger",
+				    cancelButtonClass: "btn-default",
+				    dialogClass: "modal-dialog modal-lg" // Bootstrap classes for large modal
+				});
+					
+				});
+
+				
 			})
 			
 
-			
+			jQuery("#text-area").ready(function(){
 
-			jQuery(document).ready(function(){
+				jQuery("#texto").keyup(function(){
+					
+					jQuery("#text-area").html("<p>"+jQuery("#texto").val()+"</p>");
+				});
 
-				
-				
+
 				jQuery(document).mouseup(function(e){
-				
-					targ = e;
 					
 					var content = window.getSelection().toString();
-					var contentHtml = jQuery(e.target).html();
-				
-					var tag ="<span> <div class='cifra'></div>"+
-					"<div class='content'><input type='text' width='10' id='text' value='' /> <input type='button' class='btn' value='salvar'/></div> "+window.getSelection().toString()+"</span>";
+if(tmp != content && !jQuery(e.target).is("input") && jQuery(window.getSelection().baseNode.parentElement).parent().is("div#text-area")){
+					var contentHtml = jQuery("#text-area p").html();
 					
-					contentHtml = contentHtml.replace(window.getSelection().toString(), tag);
+					var tag ="<span> <div class='cifra'></div>"+
+					"<div class='content'> <input type='text' id='text'  /> "+
+					" <input type='button' class='btn btn-success' value='salvar' />&nbsp;<input type='button' class='btn btn-danger' value='cancelar' /> "+
+					" </div> "+window.getSelection().toString()+"</span>";
+					
+					tags = tag;
+					
+					var res = contentHtml.replace(window.getSelection().toString(), tag);
+					
+					jQuery("#text-area p").html(res);
 
-					jQuery(e.target).html(contentHtml);
+tmp = content;
+}
 				})
 			});
 
@@ -96,8 +197,16 @@ var targ = null;
 <body>
 
 
+
 <div class="wrapper">
-<p>Mussum Ipsum, cacilds vidis <br /> litro abertis. Casamentiss faiz malandris<br /> se pirulitÃ¡. Interessantiss quisso<br /> pudia ce receita de bolis, mais bolis eu num gostis. <br />Detraxit consequat et quo num tendi nada. <br />Nullam volutpat risus nec<br /> leo commodo, ut interdum<br /> diam laoreet. <br />Sed non consequat odio. </p>
+
+<textarea id="texto" cols="50" placeholder="Digite aqui seu texto"></textarea>
+
+
+<div id="text-area">
+	
+</div>
+
 </div>
 
 
