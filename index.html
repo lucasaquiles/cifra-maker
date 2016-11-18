@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+	<style type="text/css">
+	body{
+
+		line-height: 45px;
+	}
+	span{
+		position:relative;
+		font-weight: bold;
+		
+		text-decoration: underline;
+	}
+
+	.cifra{
+
+		position:absolute;
+		width:auto;
+		height: auto;
+		
+		
+		padding:10px;
+		top:-40px;
+		left:10px;
+		
+		border-radius: 10px;
+		z-index: 999999;
+		font-size:12px;
+		color:#c00;
+		font-style: italic;;
+	}
+
+	.content{
+
+		position:absolute;
+		width:auto;
+		height: auto;
+		border:solid 1px #000;
+		padding:10px;
+		top:-100px;
+		left:10px;
+		background-color:#fff;
+		
+	}
+	</style>
+	<script type="text/javascript">
+var targ = null;
+
+
+			jQuery(function(){
+				jQuery("body").on("click",'.btn', function(e){
+
+
+					var c = jQuery('#text').val();
+					console.log("salvou");
+					jQuery(e.target).parent().fadeOut();
+
+
+					jQuery('.cifra').text(c);
+				});
+			})
+			
+
+			
+
+			jQuery(document).ready(function(){
+
+				
+				
+				jQuery(document).mouseup(function(e){
+				
+					targ = e;
+					
+					var content = window.getSelection().toString();
+					var contentHtml = jQuery(e.target).html();
+				
+					var tag ="<span> <div class='cifra'></div>"+
+					"<div class='content'><input type='text' width='10' id='text' value='' /> <input type='button' class='btn' value='salvar'/></div> "+window.getSelection().toString()+"</span>";
+					
+					contentHtml = contentHtml.replace(window.getSelection().toString(), tag);
+
+					jQuery(e.target).html(contentHtml);
+				})
+			});
+
+
+
+	</script>
+</head>
+
+
+<body>
+
+
+<div class="wrapper">
+<p>Mussum Ipsum, cacilds vidis <br /> litro abertis. Casamentiss faiz malandris<br /> se pirulitá. Interessantiss quisso<br /> pudia ce receita de bolis, mais bolis eu num gostis. <br />Detraxit consequat et quo num tendi nada. <br />Nullam volutpat risus nec<br /> leo commodo, ut interdum<br /> diam laoreet. <br />Sed non consequat odio. </p>
+</div>
+
+
+</body>
+</html>
